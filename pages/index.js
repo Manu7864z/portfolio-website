@@ -417,6 +417,8 @@ const StyledProjectImage = styled(Image)`
   height: 100%;
   width: 60%;
   border-radius: 10px;
+  z-index: 1;
+  opacity: 0.8;
 
   @media (max-width: 768px) {
     height: 50vh;
@@ -434,8 +436,10 @@ const StyledBlob = styled(Image)`
   width: 500px;
   height: 500px;
   z-index: 0;
-  &:hover {
-    transform: translate(-50%, -50%) scale(1.1);
-    transition: all 0.3s ease-in-out;
+  @media (max-width: 768px) {
+    width: 300px;
+    height: 300px;
+    top: 60%;
+    left: 90%;
   }
 `;
