@@ -3,12 +3,31 @@ import Lottie from "lottie-react";
 import arrowDownAnimation from "../public/arrowDown.json";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Home() {
   const handleClickScroll = () => {
     const element = document.getElementById("section-2");
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const [projectImage, setProjectImage] = useState(0);
+
+  const handleNextProjectImage = () => {
+    if (projectImage === 0 || projectImage === 1 || projectImage === 2) {
+      setProjectImage(projectImage + 1);
+    } else {
+      setProjectImage(0);
+    }
+  };
+
+  const handlePreviousProjectImage = () => {
+    if (projectImage === 1 || projectImage === 2 || projectImage === 3) {
+      setProjectImage(projectImage - 1);
+    } else {
+      setProjectImage(3);
     }
   };
 
@@ -63,12 +82,28 @@ export default function Home() {
         <StyledProjects>
           <StyledProject>
             <StyledBlob src="/blob.svg" width={600} height={390} alt="blob" />
-            <StyledProjectImage
-              src="/weatherplanar.png"
-              width={600}
-              height={390}
-              alt="WeatherPlanar"
-            />
+            {projectImage === 0 && (
+              <StyledProjectImage
+                src="/weatherplanar0.png"
+                width={300}
+                height={800}
+                alt="WeatherPlanar"
+              />
+            )}
+            {projectImage === 1 && (
+              <StyledProjectImage
+                src="/weatherplanar1.png"
+                width={300}
+                height={800}
+                alt="WeatherPlanar"
+              />
+            )}
+            <button type="button" onClick={handleNextProjectImage}>
+              next
+            </button>
+            <button type="button" onClick={handlePreviousProjectImage}>
+              Previous{" "}
+            </button>
             <StyledProjectDescription>
               <h3>WeatherPlanar</h3>
               <StyledProjectDescriptionText>
@@ -134,7 +169,7 @@ const StyledSection1 = styled.section`
 `;
 
 const StyledSection2 = styled.section`
-  height: 100vh;
+  height: 120vh;
   width: 100%;
   display: flex;
   position: relative;
@@ -414,15 +449,14 @@ const TechStackItem = styled.li`
 `;
 
 const StyledProjectImage = styled(Image)`
-  height: 100%;
-  width: 60%;
+  height: 38rem;
+  width: 22rem;
   border-radius: 10px;
   z-index: 1;
-  opacity: 0.8;
 
   @media (max-width: 768px) {
-    height: 50vh;
-    width: 100%;
+    height: 38rem;
+    width: 22rem;
   }
 `;
 
