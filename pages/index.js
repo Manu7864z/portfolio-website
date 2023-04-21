@@ -1,8 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import Lottie from "lottie-react";
 import arrowDownAnimation from "../public/arrowDown.json";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
+import { GrPrevious, GrNext } from "react-icons/gr";
 
 export default function Home() {
   const handleClickScroll = () => {
@@ -12,10 +14,54 @@ export default function Home() {
     }
   };
 
+  const handleScrollToHome = () => {
+    const element = document.getElementById("section-1");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const handleScrollToProjects = () => {
+    const element = document.getElementById("section-2");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const [projectImage, setProjectImage] = useState(0);
+
+  const handleNextProjectImage = () => {
+    if (projectImage === 0 || projectImage === 1 || projectImage === 2) {
+      setProjectImage(projectImage + 1);
+    } else {
+      setProjectImage(0);
+    }
+  };
+
+  const handlePreviousProjectImage = () => {
+    if (projectImage === 1 || projectImage === 2 || projectImage === 3) {
+      setProjectImage(projectImage - 1);
+    } else {
+      setProjectImage(3);
+    }
+  };
+
   return (
     <main>
       <Header>
         <Heading>Portfolio by Manuel Zropf</Heading>
+        <StyledNav>
+          <StyledNavList>
+            <StyledNavListItem $home onClick={handleScrollToHome}>
+              Home
+            </StyledNavListItem>
+            <StyledNavListItem onClick={handleScrollToProjects}>
+              Projects
+            </StyledNavListItem>
+            <StyledNavListItem>Skills</StyledNavListItem>
+            <StyledNavListItem>Contact</StyledNavListItem>
+          </StyledNavList>
+        </StyledNav>
       </Header>
       <StyledSection1 id="section-1">
         <StyledDiv>
@@ -63,26 +109,71 @@ export default function Home() {
         <StyledProjects>
           <StyledProject>
             <StyledBlob src="/blob.svg" width={600} height={390} alt="blob" />
-            <StyledProjectImage
-              src="/weatherplanar.png"
-              width={600}
-              height={390}
-              alt="WeatherPlanar"
-            />
+            <StyledNavButton type="button" onClick={handlePreviousProjectImage}>
+              <GrPrevious
+                style={{ color: "white", height: "50px", width: "50px" }}
+              />
+            </StyledNavButton>
+            {projectImage === 0 && (
+              <StyledProjectImage
+                src="/weatherplanar0.png"
+                width={300}
+                height={800}
+                alt="WeatherPlanar"
+              />
+            )}
+            {projectImage === 1 && (
+              <StyledProjectImage
+                src="/weatherplanar1.png"
+                width={300}
+                height={800}
+                alt="WeatherPlanar"
+              />
+            )}
+            {projectImage === 2 && (
+              <StyledProjectImage
+                src="/weatherplanar2.png"
+                width={300}
+                height={800}
+                alt="WeatherPlanar"
+              />
+            )}
+            {projectImage === 3 && (
+              <StyledProjectImage
+                src="/weatherplanar3.png"
+                width={300}
+                height={800}
+                alt="WeatherPlanar"
+              />
+            )}
+            <StyledNavButton type="button" onClick={handleNextProjectImage}>
+              <GrNext
+                style={{ color: "white", height: "50px", width: "50px" }}
+              />
+            </StyledNavButton>
             <StyledProjectDescription>
               <h3>WeatherPlanar</h3>
               <StyledProjectDescriptionText>
-                This is my Web-App called WeatherPlanar. It is a weather app
-                that shows the current weather and the forecast for the next 3
+                This is my Web-App called WeatherPlanar. It is a web app that
+                shows the current weather and the forecast for the next 3 days.
+                The user can create new tasks and appointments and plan their
                 days. It is built with React and uses the API from{" "}
                 <Link href="https://www.weatherapi.com/">WeatherAPI.com</Link>.
               </StyledProjectDescriptionText>
               <TechStackList>
                 <li>Tech Stack: </li>
-                <TechStackItem>React</TechStackItem>
-                <TechStackItem>Styled Components</TechStackItem>
-                <TechStackItem>Next.js</TechStackItem>
-                <TechStackItem>Framer-Motion</TechStackItem>
+                <TechStackItem>
+                  <p>React</p>
+                </TechStackItem>
+                <TechStackItem>
+                  <p>Styled Components</p>
+                </TechStackItem>
+                <TechStackItem>
+                  <p>Next.js</p>
+                </TechStackItem>
+                <TechStackItem>
+                  <p>Framer-Motion</p>
+                </TechStackItem>
               </TechStackList>
             </StyledProjectDescription>
           </StyledProject>
@@ -94,7 +185,6 @@ export default function Home() {
 
 const Heading = styled.h1`
   font-size: 1.5rem
-  text-align: center;
   margin: 0;
   padding: 0;
   font-family: sans-serif;
@@ -102,8 +192,8 @@ const Heading = styled.h1`
   line-height: 1.15;
   text-align: center;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 30%;
+  left: 15%;
   transform: translate(-50%, -50%);
   ;
 
@@ -123,6 +213,64 @@ const Header = styled.header`
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 `;
 
+const StyledNav = styled.nav`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 40%;
+  height: 100%;
+  right: 0;
+  position: absolute;
+  top: 0;
+  margin: 0;
+  padding: 0 2rem;
+`;
+
+const StyledNavList = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid blue;
+`;
+
+const StyledNavListItem = styled.li`
+  display: flex;
+  border: 1px solid red;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  ${(props) =>
+    props.$home &&
+    css`
+      &:hover::after {
+        width: 22%;
+        left: 6%;
+      }
+      &::after {
+        position: absolute;
+        transition: 0.3s;
+        content: "";
+        width: 0;
+        left: 50px;
+        bottom: 0;
+        height: 3px;
+        background: #f7f7f7;
+      }
+    `};
+`;
+
 const StyledSection1 = styled.section`
   height: 90vh;
   width: 100%;
@@ -134,7 +282,7 @@ const StyledSection1 = styled.section`
 `;
 
 const StyledSection2 = styled.section`
-  height: 100vh;
+  height: 200vh;
   width: 100%;
   display: flex;
   position: relative;
@@ -150,7 +298,7 @@ const StyledSection2 = styled.section`
     line-height: 1.15;
     text-align: center;
     position: absolute;
-    top: 10%;
+    top: 7%;
     left: 20%;
     transform: translate(-50%, -50%);
     margin: 0;
@@ -302,7 +450,7 @@ const StyledProject = styled.div`
 `;
 
 const StyledProjectDescription = styled.article`
-  height: 100%;
+  height: 60vh;
   width: 40%;
   gap: 10px;
   margin: 0;
@@ -312,13 +460,12 @@ const StyledProjectDescription = styled.article`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.4);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  overflow: hidden;
 
   @media (max-width: 1080px) {
     width: 50%;
@@ -370,15 +517,16 @@ const TechStackList = styled.ul`
   );
   list-style: none;
   padding: 5%;
-  margin: 10% 0 0 0;
+  margin: 3rem 0 0 0;
   border-radius: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
   width: fill;
-  overflow: scroll;
   gap: 10px;
+  position: absolute;
+  bottom: 0;
 
   @media (max-width: 768px) {
     flex-direction: row;
@@ -389,7 +537,7 @@ const TechStackList = styled.ul`
 `;
 const TechStackItem = styled.li`
   font-size: 1rem;
-  color: #282c34;
+  color: white;
   font-family: sans-serif;
   font-weight: 400;
   line-height: 1.15;
@@ -402,11 +550,25 @@ const TechStackItem = styled.li`
   height: 3rem;
   width: fill;
   backdrop-filter: blur(5px);
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
-  box-shadow: 0px 10px 10px 0px rgba(145, 192, 255, 0.5),
-    inset 0px -8px 10px 0px rgba(145, 192, 255, 0.6),
-    inset 0px 10px 20px 0px rgb(255, 255, 255);
+  transition: ease-in-out 0.3s;
+
+  &:hover {
+    transform: scale(1.1);
+    p {
+      background: rgb(131, 58, 180);
+      background: linear-gradient(
+        90deg,
+        rgba(131, 58, 180, 1) 0%,
+        rgba(253, 29, 29, 1) 50%,
+        rgba(252, 176, 69, 1) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    background-color: rgba(255, 255, 255, 0.9);
+  }
 
   @media (max-width: 768px) {
     font-size: 1rem;
@@ -414,15 +576,21 @@ const TechStackItem = styled.li`
 `;
 
 const StyledProjectImage = styled(Image)`
-  height: 100%;
-  width: 60%;
+  height: 38rem;
+  width: 22rem;
   border-radius: 10px;
   z-index: 1;
-  opacity: 0.8;
+  margin: 0;
+  padding: 0;
+  transition: ease-in-out 0.5s;
+
+  &:hover {
+    transform: scale(1.04);
+  }
 
   @media (max-width: 768px) {
-    height: 50vh;
-    width: 100%;
+    height: 38rem;
+    width: 22rem;
   }
 `;
 
@@ -441,5 +609,32 @@ const StyledBlob = styled(Image)`
     height: 300px;
     top: 60%;
     left: 90%;
+  }
+`;
+
+const StyledNavButton = styled.button`
+  margin: 0;
+  padding: 0;
+  width: 50px;
+  color: white;
+  height: 50px;
+  z-index: 1;
+  border: none;
+  background-color: transparent;
+  position: relative;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  transition: ease-in-out 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+  }
+
+  @media (max-width: 768px) {
+    top: 10%;
+    left: 10%;
   }
 `;
